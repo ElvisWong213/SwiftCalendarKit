@@ -46,7 +46,7 @@ class SwiftCalendarViewModel: ObservableObject {
     }
     
     func updateList() {
-        DispatchQueue.global().async {
+        DispatchQueue.global().asyncAfter(deadline: .now() + 0.5) {
             guard let index = self.list.firstIndex(where: { $0.yearAndMonth == self.selectedYearAndMonth }) else {
                 print("DEBUG - Unable to get index from the list")
                 return

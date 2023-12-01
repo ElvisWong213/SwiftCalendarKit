@@ -2,15 +2,26 @@ import SwiftUI
 
 public struct SwiftCalendar: View {
     @StateObject var viewModel = SwiftCalendarViewModel()
-    @State var selectedDate: Date = Date()
+    @Binding var selectedDate: Date
+    
+    private var textColor: Color = .primary
+    private var selectedDateColor: Color = .blue
+    
+    public init(selectedDate: Binding<Date>) {
+        self._selectedDate = selectedDate
+        self.textColor = .primary
+        self.selectedDateColor = .blue
+    }
     
     public var body: some View {
         VStack {
             Button {
                 viewModel.selectedYearAndMonth = CustomYearMonth(year: Date().getYear(), month: Date().getMonth())
+                selectedDate = Date()
             } label: {
                 Text(verbatim: "\(selectedDate.getDay())/\(selectedDate.getMonth())/\(selectedDate.getYear())")
                     .padding()
+                    .bold()
             }
             LazyVGrid(columns: viewModel.columns) {
                 ForEach(viewModel.weekdays, id: \.self) { weekday in
@@ -20,7 +31,7 @@ public struct SwiftCalendar: View {
             .padding(.horizontal)
             TabView(selection: $viewModel.selectedYearAndMonth) {
                 ForEach(viewModel.list) { dates in
-                    MonthView(dates: dates, selectedDate: $selectedDate)
+                    MonthView(dates: dates, selectedDate: $selectedDate, color: selectedDateColor)
                         .environmentObject(viewModel)
                         .tag(dates.yearAndMonth)
                 }
@@ -29,16 +40,22 @@ public struct SwiftCalendar: View {
                 viewModel.updateList()
                 selectedDate.updateDate(year: newValue.year, month: newValue.month)
             }
-            .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2)
             .tabViewStyle(.page(indexDisplayMode: .never))
         }
+        .foregroundColor(textColor)
     }
 }
 
-struct SwiftCalendar_Previews: PreviewProvider {
-    static var previews: some View {
-        SwiftCalendar()
+extension SwiftCalendar {
+    public func textColor(_ color: Color) -> SwiftCalendar {
+        var updatedView = self
+        updatedView.textColor = color
+        return updatedView
+    }
+    
+    public func selectedDateColor(_ color: Color) -> SwiftCalendar {
+        var updatedView = self
+        updatedView.selectedDateColor = color
+        return updatedView
     }
 }
-
-
