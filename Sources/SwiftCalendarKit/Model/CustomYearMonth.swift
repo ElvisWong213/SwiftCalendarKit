@@ -7,7 +7,28 @@
 
 import Foundation
 
-struct CustomYearMonth: Comparable, Hashable {
+struct CustomYearMonth {
+    private (set) var year: Int
+    private (set) var month: Int
+    
+    mutating func nextMonth() {
+        month += 1
+        if month > 12 {
+            month = 1
+            year += 1
+        }
+    }
+    
+    mutating func previousMonth() {
+        month -= 1
+        if month < 1 {
+            month = 12
+            year -= 1
+        }
+    }
+}
+
+extension CustomYearMonth: Comparable, Hashable {
     static func < (lhs: CustomYearMonth, rhs: CustomYearMonth) -> Bool {
         if lhs.year < rhs.year {
             return true
@@ -28,24 +49,5 @@ struct CustomYearMonth: Comparable, Hashable {
     
     static func == (lhs: CustomYearMonth, rhs: CustomYearMonth) -> Bool {
         return lhs.year == rhs.year && lhs.month == rhs.month
-    }
-    
-    private (set) var year: Int
-    private (set) var month: Int
-    
-    mutating func nextMonth() {
-        month += 1
-        if month > 12 {
-            month = 1
-            year += 1
-        }
-    }
-    
-    mutating func previousMonth() {
-        month -= 1
-        if month < 1 {
-            month = 12
-            year -= 1
-        }
     }
 }

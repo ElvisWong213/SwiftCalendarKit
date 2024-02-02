@@ -23,7 +23,7 @@ struct MonthView: View {
                     } label: {
                         ZStack {
                             Circle()
-                                .foregroundColor(color)
+                                .foregroundStyle(color)
                                 .opacity(String(selectedDate.getDay()) == day.text ? 1 : 0)
                             Text(day.text)
                         }
