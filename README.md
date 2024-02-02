@@ -32,6 +32,15 @@ SwiftCalendar(selectedDate: $selectedDate)
 ### Modifiers 
 
 ```swift
-.textColor(Color.red)
-.selectedDateColor(Color.green)
+SwiftCalendar()
+  // Text Color
+  .textColor()
+  .titleTextColor()
+  .weekdaysTextColor()
+
+  // Selected Date Circle Color
+  .selectedDateColor()
+
+  // Background Color
+  .backgroundColor()
 ```
